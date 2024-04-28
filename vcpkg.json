@@ -1,0 +1,21 @@
+{
+  "name" : "avx2-prefix-sum",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "1c5a340f6e10985e2d92af174a68dbd15c1fa4e1",
+  "dependencies" : [ {
+    "name" : "vcpkg-cmake-config",
+    "version>=" : "2022-02-06#1"
+  }, {
+    "name" : "vcpkg-cmake-get-vars",
+    "version>=" : "2023-03-02"
+  }, {
+    "name" : "vcpkg-cmake",
+    "version>=" : "2022-12-22"
+  }, {
+    "name" : "catch2",
+    "version>=" : "3.3.2"
+  }, {
+    "name" : "benchmark",
+    "version>=" : "1.8.0"
+  } ]
+}
