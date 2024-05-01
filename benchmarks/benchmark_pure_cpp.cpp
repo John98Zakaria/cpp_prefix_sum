@@ -5,8 +5,8 @@
 #include "../pure_cpp_prefix_sum.hpp"
 
 static void measure_simple_prefix_sort(benchmark::State &state) {
-    std::size_t size = 1 << 20;
-    std::vector<uint8_t> numbers(size);
+    auto const size = state.range(0);
+    std::vector<uint8_t> numbers(static_cast<std::size_t>(size));
     std::iota(numbers.begin(), numbers.end(), 0);
 
     for (auto _: state) {
@@ -15,33 +15,35 @@ static void measure_simple_prefix_sort(benchmark::State &state) {
     }
 }
 
-BENCHMARK(measure_simple_prefix_sort)->Unit(benchmark::kMicrosecond)->Iterations(500);
+BENCHMARK(measure_simple_prefix_sort)->Unit(benchmark::kMicrosecond)->Range(2, 2 << 20)->Iterations(500);
 
 
+template <std::integral T>
 static void measure_cpp_prefix_sort(benchmark::State &state) {
-    std::size_t size = state.range(0);
-    std::vector<uint8_t> numbers(size);
+    auto const size = state.range(0);
+    std::vector<T> numbers(static_cast<std::size_t>(size));
     std::iota(numbers.begin(), numbers.end(), 0);
 
 
     for (auto _: state) {
-        std::vector<uint8_t> output(size);
-
         std::inclusive_scan(std::execution::par_unseq,
                             numbers.begin(),
                             numbers.end(),
-                            output.begin(),
+                            numbers.begin(),
                             std::plus());
-        benchmark::DoNotOptimize(output);
+        benchmark::DoNotOptimize(numbers);
     }
 }
 
-BENCHMARK(measure_cpp_prefix_sort)->Unit(benchmark::kMicrosecond)->Range(2, 2 << 20)->Iterations(500);
+BENCHMARK(measure_cpp_prefix_sort<uint8_t>)->Unit(benchmark::kMicrosecond)->Range(2, 2 << 20)->Iterations(500);
+BENCHMARK(measure_cpp_prefix_sort<uint16_t>)->Unit(benchmark::kMicrosecond)->Range(2, 2 << 20)->Iterations(500);
+BENCHMARK(measure_cpp_prefix_sort<uint32_t>)->Unit(benchmark::kMicrosecond)->Range(2, 2 << 20)->Iterations(500);
+BENCHMARK(measure_cpp_prefix_sort<uint64_t>)->Unit(benchmark::kMicrosecond)->Range(2, 2 << 20)->Iterations(500);
 
 
 static void measure_inplace_cpp_prefix_sort(benchmark::State &state) {
-    std::size_t size = state.range(0);
-    std::vector<uint8_t> numbers(size);
+    auto const size = state.range(0);
+    std::vector<uint8_t> numbers(static_cast<std::size_t>(size));
     std::iota(numbers.begin(), numbers.end(), 0);
 
     for (auto _: state) {
@@ -53,8 +55,8 @@ static void measure_inplace_cpp_prefix_sort(benchmark::State &state) {
 BENCHMARK(measure_inplace_cpp_prefix_sort)->Unit(benchmark::kMicrosecond)->Range(2, 2 << 20)->Iterations(500);
 
 static void measure_inplace_val_array_cpp_prefix_sort(benchmark::State &state) {
-    std::size_t size = state.range(0);
-    std::vector<uint8_t> numbers(size);
+    auto const size = state.range(0);
+    std::vector<uint8_t> numbers(static_cast<std::size_t>(size));
     std::iota(numbers.begin(), numbers.end(), 0);
 
     for (auto _: state) {

@@ -3,9 +3,6 @@ project(avx2_prefix_sum)
 
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(OpenMP REQUIRED)
-
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 MESSAGE(INFO ${CMAKE_MODULE_PATH})
