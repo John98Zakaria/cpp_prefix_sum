@@ -11,7 +11,8 @@
 //    A minimal custom allocator is preferred because C++ allocator_traits class
 //    provides default implementation for you. Take a look at Microsoft's
 //    documentation about Allocators and allocator class.
-template <typename T, std::size_t alignment> class AlignedAllocator {
+template<typename T, std::size_t alignment>
+class AlignedAllocator {
 public:
     using value_type = T;
 
@@ -20,23 +21,24 @@ public:
     // by C++ Standard Library.
 
 
-    template <typename U>
-    inline bool operator==(const AlignedAllocator<U, alignment>& other) const noexcept {
+    template<typename U>
+    inline bool operator==(const AlignedAllocator<U, alignment> &other) const noexcept {
         return true;
     }
 
-    template <typename U>
-    inline bool operator!=(const AlignedAllocator<U, alignment>& other) const noexcept {
+    template<typename U>
+    inline bool operator!=(const AlignedAllocator<U, alignment> &other) const noexcept {
         return false;
     }
 
-    template <typename U> struct rebind {
+    template<typename U>
+    struct rebind {
         using other = AlignedAllocator<U, alignment>;
     };
 
     // STL containers call this function to allocate unintialized memory block to
     // store (no more than n) elements of type T (value_type).
-    inline value_type* allocate(const std::size_t n) const {
+    inline value_type *allocate(const std::size_t n) const {
         auto size = n;
         /*
           If you wish, for some strange reason, that the size of allocated buffer is
@@ -47,8 +49,8 @@ public:
           put more than n elements into the returned memory.
         */
         // size = (n + alignment - 1) / alignment * alignment;
-        value_type* ptr;
-        auto ret = posix_memalign((void**)&ptr, alignment, sizeof(T) * size);
+        value_type *ptr;
+        auto ret = posix_memalign((void **) &ptr, alignment, sizeof(T) * size);
         if (ret != 0)
             throw std::bad_alloc();
         return ptr;
@@ -56,7 +58,7 @@ public:
 
     // STL containers call this function to free a memory block beginning at a
     // specified position.
-    inline void deallocate(value_type* const ptr, std::size_t n) const noexcept { free(ptr); }
+    inline void deallocate(value_type *const ptr, std::size_t n) const noexcept { free(ptr); }
 };
 
 #endif

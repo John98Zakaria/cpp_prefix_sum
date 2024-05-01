@@ -92,7 +92,6 @@ function(
     set(PROJECT_WARNINGS_C "${PROJECT_WARNINGS_CXX}")
 
 
-
     target_compile_options(
             ${project_name}
             INTERFACE # C++ warnings
