@@ -67,6 +67,7 @@ constexpr void inplace_sse2_prefix_sum_t(std::vector<T> &in_out_vector) {
     // For some reason this is faster than incrementing i by 16.
     auto const number_of_iterations = static_cast<uint64_t>(std::ceil(vector_size / avx_step_size));
     auto current_sum_avx = vector_set_function(T(0));
+
     for (uint64_t i = 0; i < number_of_iterations; ++i) {
         auto const vector_pointer = in_out_vector.data() + (i * avx_step_size);
         auto load_part = _mm_loadu_si128(reinterpret_cast<const __m128i_u *>(vector_pointer));
